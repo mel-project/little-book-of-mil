@@ -1,4 +1,5 @@
 # Summary
 
-- [Chapter 1](./chapter_1.md)
-- [Chapter 2](./chapter_2.md)
+- [Introduction](./chapter_1.md)
+- [Built in functions](./chapter_2.md)
+- [Control flow](./chapter_3.md)
