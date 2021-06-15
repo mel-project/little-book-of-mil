@@ -2,10 +2,17 @@
 
 Mil, short for the MelVM Intermediate Lisp, is a small language designed to
 reflect the MelVM internal architecture, while also providing a few common abstractions
-for complex programs. If you are reading this, you are either designing a
-higher level language for MelVM and you want to compile to Mil as an
-intermediate, or you are need an expressive power (probably for optimizations) that may not be available in
-a higher level language.
+for complex programs. If you are reading this, you are either:
+
+1. Designing a higher level language for MelVM and you want to compile to Mil as ankk
+intermediate language. Or you need some expressive power (probably for optimizations)
+that may not be available in a higher level language.
+2. Developing/improving aspects of Mil itself.
+
+Each chapter will start as a user guide to a certain feature of mil. Then
+implementation details will be provided in section labeled "Language Comments".
+As the mil language is developed, desgin changes/decisions and new features will all
+be documented here.
 
 Keep in mind that Mil is generally not a friendly language to be used directly by
 programmers, but instead to be an intermediate language which higher level

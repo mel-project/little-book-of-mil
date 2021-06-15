@@ -1,7 +1,7 @@
 # Control flow
 
-Thank to MelVM's persistent data structures, most constructs in Mil are
-designed to act expression-like, in that they return something. This was
+Thanks to MelVM's persistent data structures, most constructs in Mil are
+expression-like in that they return something. This was
 seen in the built in functions of Chapter 2, and again you'll see that even
 if statements are expression-like.
 
@@ -19,9 +19,11 @@ The general syntax is
 ```
 
 An expression can be embedded within the if statement directly because
-arguments are evaluated first, and the result of (+ 1 0) will just be a 1 on
-the stack. Since MelVM doesn't have native boolean, a 0 as u256 is considered
-false for logical functions, and other u256 value to be true.
+arguments are evaluated first, and the result of (+ 1 0) will just be a 1.
+
+#### Language Comments
+Since MelVM doesn't have a native boolean, a 0 as u256 is considered
+false for logical functions, and other u256 values to be true.
 
 Under the hood, the if expression just expands to break-if-equal-to-zero (Bez)
 and Jmp logic.
