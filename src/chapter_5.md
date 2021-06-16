@@ -18,7 +18,7 @@ A full mil program demonstrating function syntax
 (square 21)
 ```
 
-## Language Comments
+#### Language Comments
 The reason functions are defined at the top level only is that functions have
 no sense of definition-scope. Unlike on a traditional machine where functions
 have a memory location, the MelVM program counter can only move forward, not

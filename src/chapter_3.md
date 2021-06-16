@@ -38,6 +38,11 @@ all loops must have a statically specified upper-bound.
     (+ 1 1))
 ```
 
+Unfortunately, the number of iterations in a loop must be a constant, not a
+variable. This is because the loop count is actually compiled into the program
+executable in order for gas costs to be statically computable. There are ways
+to alleviate this unergonomic syntax with types, which mil does not have.
+
 An example for loop:
 ```clojure
 ; Pushes 5 numbers on the stack: 0 2 4 6 8
