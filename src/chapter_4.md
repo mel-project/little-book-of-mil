@@ -1,40 +1,82 @@
-# Mutation and Memory
+# Control flow
 
-Mil does not have many higher-level language constructs, so mutation is needed
-for even basic things like iterating over a vector. Mutation is also useful for
-writing performant code that the compiler itself may not be able to do.
+Thanks to MelVM's persistent data structures, most constructs in Mil are
+expression-like in that they return something. This was
+seen in the built in functions of Chapter 2, and again you'll see that even
+if statements are expression-like.
 
-All variables reference a location in memory (the MelVM heap). This location is
-determined when a variable is bound in a let-binding. `set!` allows the
-location a variable references to be bound to a new value.
-
+## If statements
+The general syntax is
 ```clojure
-(let (i 0) ; memory-location, say.. 17.. stores 0 and i refers to it
-    (+ i 1)) ; memory location 17 is still 0
-
-(let (i 0) ; memory-location 18 stores 0 and i refers to it
-    (set! i (+ i 1)) ; memory location 17 is still 0
+(if <test-expression> <true-case> <false-case>)
 ```
 
-The general syntax of set!:
 ```clojure
-(set! <variable-name> <expression>)
+; Returns 10
+(if (+ 1 0) 10 3)
+; Returns 3
+(if (+ 0 0) 10 3)
 ```
 
-Note that the location a variable references is not mutable. This is stuck for
-the lifetime of the binding.
-
-Also notice that set! does not expect a memory location, but instead a valid
-variable. This is an ergonomic design decision in Mil to block arbitrary memory
-re-writing. It is possible in the future that Mil will need more
-power/flexibility here, and raw memory setting could be enabled to make
-pointer variable types possible. However, it is not clear yet that this is
-needed since MelVM's persistent data structure interface makes many cases of
-mutation unnecessary.
+An expression can be embedded within the if statement directly because
+arguments are evaluated first, and the result of (+ 1 0) will just be a 1.
 
 #### Language Comments
-Mil follows a simple incremental scheme for assigning locations to variables.
-The first few memory addresses (starting at 0) are reserved for preloaded data
-like covenenant hash, etc.. When a variable's scope ends, the memory location
-is freed simply by decrementing a memory-head-counter. This is safe because
-all variables are scoped; no variables can live past their defined scope.
+Since MelVM doesn't have a native boolean, a 0 as u256 is considered
+false for logical functions, and other u256 values to be true.
+
+Under the hood, the if expression just expands to break-if-equal-to-zero (Bez)
+and Jmp logic.
+
+## Loops
+In order for MelVM programs to have a computable gas cost before they're run,
+all loops must have a statically specified upper-bound.
+
+The general syntax for a loop is
+```clojure
+(loop <number> <statement>)
+```
+
+Unfortunately, the number of iterations in a loop must be a constant, not a
+variable. This is because the loop count is actually compiled into the program
+executable in order for gas costs to be statically computable. There are ways
+to alleviate this unergonomic syntax with types, which mil does not have.
+
+Loops are statements, not expressions. They don't return a value, so they're
+only useful for side-effects like mutation. Notice that a loop body is a
+statement, not an expression. So the following is invalid code
+
+```clojure
+; This will not compile!
+; Would return 5 number 2s
+(loop 5
+    (+ 1 1))
+```
+
+`set!` and `set-let` are both statements, so the following is a valid example
+of a "for" loop to multiply `x` by 2 5 times.
+```clojure
+(set-let (i 0
+      x 1)
+    (loop 5 (set-let
+        (set! x (* x 2))
+        (set! i (+ i 1)))))
+```
+
+Another interesting piece in this example is the second use
+of `set-let`. Because `set!` is side effectful and doesn't return a value, we need
+a way to express a sequence of operations so that we may "return" something, as
+well as do some side effects.
+
+The `let` and `set-let` bindings are the only way to execute multiple expressions in a sequence
+like this. Note that the same binding syntax is also used to bind multiple values at once, i.e.
+
+```clojure
+(let (i 0
+      j 1
+      k 2)
+    (+ i j k))
+```
+
+As always, whitespace here is arbitrary. As long as there is some whitespace,
+the compiler will accept it.

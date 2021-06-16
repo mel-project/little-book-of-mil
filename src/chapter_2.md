@@ -61,7 +61,7 @@ u256->bytes | ITOB
 bytes->u256 | BTOI
 
 
-# Language Comments
+#### Language Comments
 As a general pattern, a Mil function takes inputs in the same order they are
 read in the VM. So `(- 5 2)` compiles to opcodes:
 `[PUSHI(5) PUSHI(2) SUB]` which results in integer `3` being pushed to the

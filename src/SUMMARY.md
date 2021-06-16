@@ -2,6 +2,6 @@
 
 - [Introduction](./chapter_1.md)
 - [Built in functions](./chapter_2.md)
-- [Control flow](./chapter_3.md)
-- [Mutation and Memory](./chapter_4.md)
+- [Mutation and Memory](./chapter_3.md)
+- [Control flow](./chapter_4.md)
 - [Functions](./chapter_5.md)
