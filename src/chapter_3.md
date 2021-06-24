@@ -37,7 +37,8 @@ General form of a set-let statement
 (set-let ([var expr]) [statement])
 ```
 
-Also notice that set! does not expect a memory location, but instead a valid
+#### Language Comments
+Notice that set! does not expect a memory location, but instead a valid
 variable. This is an ergonomic design decision in Mil to block arbitrary memory
 re-writing. It is possible in the future that Mil will need more
 power/flexibility here, and raw memory setting could be enabled to make
@@ -45,7 +46,6 @@ pointer variable types possible. However, it is not clear yet that this is
 needed since MelVM's persistent data structure interface makes many cases of
 mutation unnecessary.
 
-#### Language Comments
 All variables reference a location in memory (the MelVM heap). This location is
 determined when a variable is bound in a let-binding. `set!` allows the
 location a variable references to be bound to a new value.

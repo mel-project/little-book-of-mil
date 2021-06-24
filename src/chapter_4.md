@@ -5,7 +5,7 @@ expression-like in that they return something. This was
 seen in the built in functions of Chapter 2, and again you'll see that even
 if statements are expression-like.
 
-## If statements
+## If expression
 The general syntax is
 ```clojure
 (if <test-expression> <true-case> <false-case>)
@@ -27,6 +27,36 @@ false for logical functions, and other u256 values to be true.
 
 Under the hood, the if expression just expands to break-if-equal-to-zero (Bez)
 and Jmp logic.
+
+## Set-if statements
+There is also a statement form of the if control flow, called `set-if`. It's
+branches are statements, and so set-if does not return a value.
+```clojure
+(set-if <test-expression> <true-case-statement> <false-case-statement>)
+```
+
+This is useful for instance if you want to conditionaly set something in a
+loop.
+```clojure
+; Returns 6+7+8+9 = 30
+
+(let (i 0
+      sum 0)
+
+  (loop 10
+    (set-if (> i 5)
+      (set! sum (+ sum i))
+      (noop)))
+
+  sum)
+```
+
+## Noop
+The last example introduces the No-op statement. Noop does nothing, it takes no
+inputs and produces no outputs. Therefore it is a statement.
+```clojure
+(noop)
+```
 
 ## Loops
 In order for MelVM programs to have a computable gas cost before they're run,
