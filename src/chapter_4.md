@@ -41,12 +41,13 @@ loop.
 ; Returns 6+7+8+9 = 30
 
 (let (i 0
-      sum 0)
+  sum 0)
 
-  (loop 10
+  (loop 10 (set-let ()
     (set-if (> i 5)
       (set! sum (+ sum i))
-      (noop)))
+      (noop))
+    (set! i (+ i 1))))
 
   sum)
 ```
